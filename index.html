@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tachles — keep more of what every order earns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF; --bg2:#F5F8FC; --bg3:#EEF3FA; --card:#FFFFFF;
+    --line:#E7EDF6; --line2:#D8E1EF; --ink:#11183A; --text:#26344E; --muted:#5E6C87; --dim:#93A0B8;
+    --navy:#13234A; --teal:#10B6A0; --teal2:#13C7A8; --blue:#3B7BF6; --purple:#8B5CF6; --amber:#E0962B; --red:#EF5B5B;
+    --pteal:#E2F7F2; --pblue:#E8F0FE; --ppurple:#F1ECFE; --pamber:#FCF1DD; --pred:#FDECEC; --pslate:#F1F5FB;
+    --grad:linear-gradient(120deg,#13C7A8,#3B7BF6,#8B5CF6);
+    --r:16px; --r-lg:22px; --sh:0 24px 60px -34px rgba(22,45,86,.30); --sh-sm:0 10px 30px -18px rgba(22,45,86,.22);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 30px;}
+  h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.13;color:var(--ink);}
+  h1{font-size:clamp(38px,6vw,66px);} h2{font-size:clamp(26px,3.6vw,42px);} h3{font-size:19px;font-weight:700;}
+  p{color:var(--muted);font-size:17px;}
+  a{color:inherit;text-decoration:none;cursor:pointer;}
+  .grad{color:var(--teal);-webkit-text-fill-color:var(--teal);}
+  .eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);padding:6px 15px;border-radius:100px;background:var(--pteal);}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:inherit;font-size:16px;font-weight:600;padding:13px 24px;border-radius:13px;border:0;cursor:pointer;transition:.25s cubic-bezier(.16,1,.3,1);}
+  .btn-grad{background:var(--navy);color:#fff;box-shadow:0 12px 30px -12px rgba(19,35,74,.55);}
+  .btn-grad:hover{transform:translateY(-2px);box-shadow:0 16px 38px -12px rgba(19,35,74,.65);}
+  .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line2);} .btn-ghost:hover{background:var(--bg2);transform:translateY(-2px);}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:var(--pteal);color:var(--teal);font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:100px;}
+  .glow{position:absolute;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;opacity:.6;}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(18px,-14px) scale(1.04);}}
+
+  nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:23px;letter-spacing:-.03em;color:var(--ink);}
+  .logo .d{width:12px;height:12px;border-radius:50%;background:var(--navy);}
+  .nav-links{display:flex;align-items:center;gap:6px;}
+  .nlink{background:transparent;border:0;font-family:inherit;font-weight:600;font-size:15px;color:var(--muted);padding:9px 14px;border-radius:10px;cursor:pointer;transition:.2s;}
+  .nlink:hover,.nlink.on{color:var(--ink);background:var(--bg2);}
+  .dropdown{position:relative;}
+  .drop-menu{position:absolute;top:48px;left:0;width:520px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh);padding:16px;display:none;grid-template-columns:1fr 1fr;gap:6px;z-index:80;}
+  .drop-menu.open{display:grid;}
+  .drop-item{display:flex;align-items:center;gap:13px;padding:12px;border-radius:12px;transition:.18s;}
+  .drop-item:hover{background:var(--bg2);}
+  .drop-item .di{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 auto;}
+  .drop-item .dt{font-weight:700;color:var(--ink);font-size:15px;} .drop-item .ds{font-size:12.5px;color:var(--dim);}
+  @media(max-width:860px){.nav-links .nlink span.lbl{display:none;}.drop-menu{width:300px;grid-template-columns:1fr;}}
+
+  .view{display:none;} .view.on{display:block;animation:vfade .4s ease;}
+  @keyframes vfade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .hero{position:relative;padding:88px 0 92px;text-align:center;overflow:hidden;}
+  .hero.sm{padding:66px 0 28px;}
+  .hero .glow.g1{width:540px;height:540px;background:rgba(19,199,168,.16);top:-200px;left:-90px;animation:float 9s ease-in-out infinite;}
+  .hero .glow.g2{width:500px;height:500px;background:rgba(19,35,74,.12);bottom:-200px;right:-90px;animation:float 11s ease-in-out infinite reverse;}
+  .hero-in{position:relative;z-index:2;max-width:840px;margin:0 auto;}
+  .hero h1{margin:24px 0 20px;} .hero .lead{font-size:20px;max-width:48ch;margin:0 auto 32px;color:var(--muted);}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;} .hero-note{margin-top:22px;font-size:14px;color:var(--dim);}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);}
+  .float-card{position:relative;z-index:2;max-width:520px;margin:50px auto 0;}
+  .oc{padding:22px 24px;text-align:left;}
+  .oc .h{display:flex;justify-content:space-between;align-items:center;font-weight:700;color:var(--ink);font-size:15px;padding-bottom:13px;border-bottom:1px solid var(--line);}
+  .row{display:flex;justify-content:space-between;padding:9px 0;font-size:15px;color:var(--muted);} .row b{color:var(--ink);font-weight:600;}
+  .net{display:flex;justify-content:space-between;align-items:center;margin-top:11px;padding-top:13px;border-top:1px dashed var(--line2);font-size:18px;font-weight:800;color:var(--ink);} .net .ok{color:var(--teal);} .net .bad{color:var(--red);}
+  .thumb{width:48px;height:48px;border-radius:13px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .th-teal{background:var(--pteal);} .th-blue{background:var(--pblue);} .th-purple{background:var(--ppurple);} .th-amber{background:var(--pamber);} .th-red{background:var(--pred);}
+
+  section{padding:80px 0;position:relative;}
+  .sec-head{max-width:640px;margin:0 auto 48px;text-align:center;} .sec-head h2{margin:16px 0 14px;}
+  .lede{font-size:18px;line-height:1.75;max-width:60ch;margin:0 auto;color:var(--muted);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;} @media(max-width:820px){.grid2{grid-template-columns:1fr;}}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;} @media(max-width:980px){.grid4{grid-template-columns:1fr 1fr;}} @media(max-width:560px){.grid4{grid-template-columns:1fr;}}
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px;box-shadow:var(--sh-sm);transition:.35s;} .qcard:hover{transform:translateY(-4px);box-shadow:var(--sh);}
+  .qcard .he{direction:rtl;font-size:19px;color:var(--ink);font-weight:600;line-height:1.6;} .qcard .who{margin-top:12px;font-size:13px;color:var(--teal);font-weight:700;}
+
+  .scard{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:var(--sh-sm);transition:.3s;cursor:pointer;} .scard:hover{transform:translateY(-5px);box-shadow:var(--sh);}
+  .scard .si{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+  .scard h3{margin-bottom:8px;} .scard p{font-size:14.5px;} .scard .more{margin-top:14px;font-weight:700;color:var(--teal);font-size:14px;}
+
+  .outs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;} @media(max-width:820px){.outs{grid-template-columns:1fr;}}
+  .out{border-radius:var(--r);padding:32px;text-align:center;border:1px solid var(--line);}
+  .out:nth-child(1){background:var(--pblue);} .out:nth-child(2){background:var(--ppurple);} .out:nth-child(3){background:var(--pteal);}
+  .out .big{font-size:42px;font-weight:800;} .out:nth-child(1) .big{color:var(--blue);} .out:nth-child(2) .big{color:var(--purple);} .out:nth-child(3) .big{color:var(--teal);} .out p{font-size:15px;margin-top:10px;color:var(--text);}
+
+  .cta-box{position:relative;overflow:hidden;border-radius:26px;border:1px solid var(--line);background:linear-gradient(135deg,var(--pteal),var(--ppurple));text-align:center;padding:66px 26px;}
+  .cta-box h2{margin-bottom:14px;} .cta-box p{max-width:46ch;margin:0 auto 28px;color:var(--text);}
+
+  /* feature folds */
+  .feat{display:grid;grid-template-columns:1fr 1.1fr;gap:56px;align-items:center;padding:48px 0;}
+  .feat.rev{grid-template-columns:1.1fr 1fr;} .feat.rev .feat-text{order:2;}
+  @media(max-width:900px){.feat,.feat.rev{grid-template-columns:1fr;gap:32px;}.feat.rev .feat-text{order:0;}}
+  .feat-text .tag{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+  .tag.prob{color:var(--red);} .tag.sol{color:var(--teal);}
+  .feat-text h2{font-size:clamp(23px,2.8vw,32px);margin:12px 0 14px;} .feat-text p{font-size:17px;}
+  .breakdown{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:34px;} @media(max-width:760px){.breakdown{grid-template-columns:1fr;}}
+  .bd{border-radius:14px;padding:22px;border:1px solid var(--line);} .bd.what{background:var(--pteal);} .bd.why{background:var(--ppurple);}
+  .bd .k{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;} .bd.what .k{color:var(--teal);} .bd.why .k{color:var(--purple);}
+  .bd li{list-style:none;display:flex;gap:10px;font-size:14.5px;color:var(--text);padding:6px 0;line-height:1.55;} .bd.what li i{color:var(--teal);font-weight:800;} .bd.why li i{color:var(--purple);font-weight:800;}
+
+  .mock-wrap{position:relative;}
+  .browser{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--sh);}
+  .bbar{display:flex;align-items:center;gap:12px;padding:11px 15px;background:var(--bg2);border-bottom:1px solid var(--line);}
+  .dots{display:flex;gap:7px;} .dots span{width:11px;height:11px;border-radius:50%;} .dots span:nth-child(1){background:#ff5f57;}.dots span:nth-child(2){background:#febc2e;}.dots span:nth-child(3){background:#28c840;}
+  .burl{flex:1;font-size:12px;color:var(--dim);background:#fff;border:1px solid var(--line);border-radius:7px;padding:5px 12px;font-family:ui-monospace,monospace;}
+  .bbody{padding:20px;}
+  .app-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;} .app-head .t{font-weight:700;color:var(--ink);font-size:16px;}
+  .pill{font-size:12px;font-weight:700;padding:4px 11px;border-radius:100px;background:var(--pamber);color:var(--amber);} .pill.red{background:var(--pred);color:var(--red);} .pill.teal{background:var(--pteal);color:var(--teal);}
+  .stat-g{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:14px;} @media(max-width:520px){.stat-g{grid-template-columns:1fr;}}
+  .stt{background:var(--pslate);border-radius:12px;padding:14px;} .stt .k{font-size:12.5px;color:var(--muted);} .stt .v{font-size:22px;font-weight:800;color:var(--ink);margin-top:3px;} .stt .v.tl{color:var(--teal);} .stt .delta{font-size:11.5px;font-weight:700;margin-top:3px;} .delta.up{color:var(--teal);}
+
+  .move{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:11px;cursor:pointer;transition:.2s;}
+  .move.on{border-color:var(--teal);box-shadow:0 0 0 3px var(--pteal);}
+  .move .mi{width:40px;height:40px;border-radius:11px;background:var(--pteal);display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto;}
+  .move .tt{font-weight:700;color:var(--ink);font-size:14.5px;} .move .mt{font-size:12.5px;color:var(--dim);} .move .am{font-weight:800;color:var(--teal);font-size:15px;}
+  .sw{position:relative;width:44px;height:25px;border-radius:100px;background:#D5DEEC;cursor:pointer;transition:.25s;flex:0 0 auto;} .sw::after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2);} .sw.on{background:var(--teal);} .sw.on::after{left:22px;}
+  .float-tip{position:absolute;right:-14px;bottom:-22px;max-width:300px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:16px 18px;font-weight:700;color:var(--teal);font-size:15px;line-height:1.4;z-index:5;} @media(max-width:900px){.float-tip{position:static;margin-top:14px;max-width:none;}}
+
+  .ln{display:flex;justify-content:space-between;padding:8px 0;font-size:14.5px;color:var(--muted);border-bottom:1px solid var(--line);} .ln b{color:var(--ink);font-weight:600;}
+  .owe{display:flex;align-items:center;gap:9px;font-size:14.5px;color:var(--text);padding:6px 0;} .owe i{color:var(--teal);font-weight:800;}
+  .opt{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:11px;cursor:pointer;transition:.2s;} .opt.sel{border-color:var(--teal);background:var(--pteal);}
+  .opt .tt{font-weight:700;color:var(--ink);font-size:14.5px;} .opt .mt{font-size:12.5px;color:var(--dim);} .opt .am{font-weight:800;color:var(--ink);}
+  .bonus{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:7px;background:var(--pteal);color:var(--teal);margin-left:7px;}
+  .reply{display:none;margin-top:14px;padding:15px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);direction:rtl;} .reply.show{display:block;} .reply .l{direction:ltr;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:7px;} .reply p{color:var(--ink);font-size:15px;}
+  .res{display:none;margin-top:14px;} .res.show{display:flex;}
+
+  .phone{width:290px;margin:0 auto;background:#fff;border:8px solid #E7EDF6;border-radius:42px;box-shadow:var(--sh);overflow:hidden;}
+  .pbar{display:flex;align-items:center;justify-content:center;gap:7px;font-weight:800;color:var(--ink);font-size:13px;letter-spacing:.05em;padding:16px;border-bottom:1px solid var(--line);text-transform:uppercase;background:var(--bg2);}
+  .pbody{padding:18px;} .pscreen .ttl{text-align:center;font-weight:700;color:var(--ink);font-size:16px;margin-bottom:3px;} .pscreen .sub{text-align:center;font-size:12.5px;color:var(--dim);margin-bottom:16px;}
+  .chat{display:flex;flex-direction:column;gap:10px;} .bub{max-width:80%;padding:11px 14px;border-radius:16px;font-size:13.5px;direction:rtl;line-height:1.5;} .bub.inb{background:var(--pslate);color:var(--ink);align-self:flex-start;border-bottom-left-radius:5px;} .bub.me{background:var(--pteal);color:#0c6b5e;align-self:flex-end;border-bottom-right-radius:5px;} .bub.q{background:var(--pamber);color:#8a5a12;align-self:flex-start;font-weight:600;}
+
+  .greet{font-size:13.5px;color:var(--muted);} .greet b{color:var(--ink);font-weight:700;}
+  .chart-card{margin-top:14px;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .chart-card .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;} .chart-card .ch .t{font-weight:700;color:var(--ink);font-size:13.5px;} .chart-card .ch .v{font-weight:800;color:var(--teal);font-size:15px;}
+  .months{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-top:6px;padding:0 6px;}
+  .leak{margin-top:14px;} .leak .lt{font-weight:700;color:var(--ink);font-size:13.5px;margin-bottom:9px;}
+  .bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13px;} .bar-row .lbl{width:130px;color:var(--muted);flex:0 0 auto;} .bar-track{flex:1;height:9px;border-radius:100px;background:var(--bg3);overflow:hidden;} .bar-fill{height:100%;border-radius:100px;background:var(--teal);width:0;transition:width 1s cubic-bezier(.16,1,.3,1);} .bar-row .amt{width:64px;text-align:right;color:var(--ink);font-weight:800;flex:0 0 auto;}
+  .kept{margin-top:14px;display:flex;justify-content:space-between;align-items:center;padding:18px;border-radius:14px;background:linear-gradient(135deg,var(--pteal),var(--pblue));border:1px solid var(--line);} .kept .k{font-weight:700;color:var(--teal);} .kept .v{font-size:30px;font-weight:800;color:var(--ink);}
+  .ssheet{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--muted);} .ssheet .hr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;padding:7px 0;border-bottom:1px solid var(--line);} .ssheet .hr.head{color:var(--dim);font-weight:700;} .ssheet .qq{color:var(--red);font-weight:700;}
+
+  /* integrations */
+  .logo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;} @media(max-width:760px){.logo-grid{grid-template-columns:1fr 1fr;}}
+  .lcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;box-shadow:var(--sh-sm);transition:.3s;} .lcard:hover{transform:translateY(-4px);box-shadow:var(--sh);}
+  .lcard .e{font-size:30px;} .lcard .nm{font-weight:700;color:var(--ink);margin-top:8px;font-size:15px;} .lcard .cat{font-size:12px;color:var(--dim);margin-top:2px;}
+  .payme-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);background:linear-gradient(135deg,#0E1B33,#1d2b4d);color:#fff;padding:38px;}
+  .payme-card h3{color:#fff;font-size:24px;} .payme-card p{color:#b9c4dc;margin-top:12px;} .payme-card .tagp{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7fe7d4;background:rgba(127,231,212,.12);padding:5px 13px;border-radius:100px;}
+
+  footer{padding:46px 0;border-top:1px solid var(--line);color:var(--dim);font-size:14px;background:var(--bg2);}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);} .reveal.in{opacity:1;transform:none;}
+  .d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="logo" data-go="home"><span class="d"></span>Tachles</div>
+    <div class="nav-links">
+      <button class="nlink on" data-view="home">Home</button>
+      <div class="dropdown">
+        <button class="nlink" id="dropBtn">Product ▾</button>
+        <div class="drop-menu" id="dropMenu">
+          <a class="drop-item" data-view="profit"><span class="di th-teal">🛡️</span><span><span class="dt">Profit Guard</span><span class="ds">find products that lose money</span></span></a>
+          <a class="drop-item" data-view="returns"><span class="di th-blue">↩️</span><span><span class="dt">Returns Engine</span><span class="ds">what you owe, handled cheap</span></span></a>
+          <a class="drop-item" data-view="refund"><span class="di th-purple">🎁</span><span><span class="dt">Smart Refund</span><span class="ds">keep the revenue as credit</span></span></a>
+          <a class="drop-item" data-view="dashboard"><span class="di th-amber">📊</span><span><span class="dt">Margin Dashboard</span><span class="ds">see what you kept</span></span></a>
+        </div>
+      </div>
+      <button class="nlink" data-view="integrations">Integrations</button>
+      <a class="btn btn-grad" style="padding:9px 18px;font-size:14.5px;margin-left:6px;" data-go="profit">Try the demo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HOME ========== -->
+<div class="view on" id="view-home">
+  <header class="hero">
+    <div class="glow g1"></div><div class="glow g2"></div>
+    <div class="wrap hero-in">
+      <span class="eyebrow">Margin protection for small stores</span>
+      <h1>Keep more of what <span class="grad">every order</span> earns.</h1>
+      <p class="lead">Tachles protects your profit on every sale. It prices your shipping right and handles returns the smart way, so the money you earned actually stays with you.</p>
+      <div class="hero-cta"><button class="btn btn-grad" data-go="profit">See how it works</button><a class="btn btn-ghost" href="#problem">What it fixes</a></div>
+      <div class="hero-note">Built for one-person stores on Shopify, WooCommerce and Wix. Grows with you.</div>
+      <div class="float-card reveal"><div class="card oc">
+        <div class="h"><span>Order #1043 · Silver necklace</span><span class="chip">live margin</span></div>
+        <div class="row"><span>Price</span><b>₪150.00</b></div><div class="row"><span>Product cost</span><b>− ₪70.00</b></div>
+        <div class="row"><span>Real shipping (HFD, zone 2)</span><b>− ₪32.00</b></div><div class="row"><span>Payment fee + packaging</span><b>− ₪6.25</b></div>
+        <div class="net"><span>You keep</span><span class="ok">₪41.75</span></div>
+      </div></div>
+    </div>
+  </header>
+
+  <section id="problem"><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">The problem</span><h2>You are losing money you can't see.</h2>
+      <p class="lede">Running a small store means dealing with couriers, payment companies and returns. Each one carries hidden costs that are hard to track, so you keep selling and quietly lose money on orders you thought were profitable, and over-pay customers on returns because no one told you the rules.</p></div>
+    <div class="grid2">
+      <div class="qcard reveal d1"><div class="he">"כרגע אני משלמת עד הבית 40.95 ₪ ומבקשת מהלקוח 28 ₪"</div><div class="who">store owner · on shipping</div></div>
+      <div class="qcard reveal d2"><div class="he">"מה אתם עושים כשלקוח מזמין עם משלוח חינם ואז מבטל? יש איך לגבות את המשלוח?"</div><div class="who">store owner · on returns</div></div>
+    </div>
+  </div></section>
+
+  <section style="background:var(--bg2);"><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">The product</span><h2>Four things Tachles does for you.</h2><p class="lede">Click any one to see how it works, with real product screens.</p></div>
+    <div class="grid4">
+      <div class="scard reveal d1" data-view="profit"><div class="si th-teal">🛡️</div><h3>Profit Guard</h3><p>Finds the products that quietly lose you money and fixes the pricing.</p><div class="more">See how it works ›</div></div>
+      <div class="scard reveal d1" data-view="returns"><div class="si th-blue">↩️</div><h3>Returns Engine</h3><p>Tells you what you legally owe and the cheapest way to handle it.</p><div class="more">See how it works ›</div></div>
+      <div class="scard reveal d2" data-view="refund"><div class="si th-purple">🎁</div><h3>Smart Refund</h3><p>Offers store credit so the money stays in your store, not out the door.</p><div class="more">See how it works ›</div></div>
+      <div class="scard reveal d2" data-view="dashboard"><div class="si th-amber">📊</div><h3>Margin Dashboard</h3><p>Shows your true profit and the money Tachles kept, every month.</p><div class="more">See how it works ›</div></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">What changes</span><h2>Real money, back in your pocket.</h2></div>
+    <div class="outs">
+      <div class="out reveal d1"><div class="big">1 in 5</div><p>orders was shipping at a loss. Now you catch it before it ships.</p></div>
+      <div class="out reveal d2"><div class="big">+39%</div><p>of refunds stay in your store as credit instead of cash going out.</p></div>
+      <div class="out reveal d3"><div class="big">₪5,190</div><p>kept last month, money you would have quietly lost.</p></div>
+    </div>
+  </div></section>
+
+  <section style="background:var(--bg2);"><div class="wrap grid2" style="align-items:center;gap:48px;">
+    <div class="reveal"><span class="eyebrow">No building required</span><h2 style="margin:16px 0 14px;">It plugs into what you already use.</h2>
+      <p>Tachles is not a system you build. It connects to your store, couriers and payments in a few clicks, and if you use PayMe it is already built in. Start solo, and keep it as you grow.</p>
+      <button class="btn btn-grad" style="margin-top:22px;" data-view="integrations">See integrations</button></div>
+    <div class="reveal d1"><div class="logo-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="lcard"><div class="e">🛍️</div><div class="nm">Shopify</div><div class="cat">store</div></div>
+      <div class="lcard"><div class="e">🚚</div><div class="nm">HFD · UPS</div><div class="cat">couriers</div></div>
+      <div class="lcard"><div class="e">💳</div><div class="nm">PayMe</div><div class="cat">payments · built in</div></div>
+      <div class="lcard"><div class="e">🧾</div><div class="nm">Green Invoice</div><div class="cat">accounting</div></div>
+    </div></div>
+  </div></section>
+
+  <section><div class="wrap"><div class="cta-box reveal"><h2>Start keeping more.</h2><p>See exactly how Tachles protects the money on every order, before and after the sale.</p><button class="btn btn-grad" data-go="profit">See how it works</button></div></div></section>
+</div>
+
+<!-- ========== PROFIT GUARD ========== -->
+<div class="view" id="view-profit">
+  <section class="hero sm"><div class="glow g1" style="width:420px;height:420px;background:rgba(19,199,168,.18);top:-140px;left:6%;"></div>
+    <div class="wrap hero-in" style="position:relative;z-index:2;">
+      <span class="eyebrow">Profit Guard · pricing engine</span>
+      <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">Find the products that <span class="grad">quietly lose you money.</span></h1>
+      <p class="lead">Profit Guard watches your sales, spots the patterns that drain your margin, and recommends a fix you approve once. Then it manages it for you, on every order.</p>
+    </div></section>
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:10px;"><span class="eyebrow" style="background:var(--pred);color:var(--red);">The problem</span><h2 style="margin-top:14px;">A "good" order that actually loses money.</h2></div>
+    <div class="feat reveal">
+      <div class="feat-text"><span class="tag prob">Before Tachles</span><h2>The hidden costs eat the order.</h2>
+        <p>A ₪59 bracelet looks like a sale. But once the real shipping, payment fee and packaging come out, and the customer paid no shipping, the order is underwater. You never see it, because the store only shows the ₪59.</p></div>
+      <div class="browser">
+        <div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">yourstore.co.il / checkout</div></div>
+        <div class="bbody">
+          <div class="app-head"><span class="t">Maya's Jewelry · checkout</span><span class="pill red">free shipping</span></div>
+          <div style="display:flex;gap:13px;align-items:center;padding:4px 0 12px;"><div class="thumb th-amber">📿</div><div><div style="font-weight:700;color:var(--ink);">Beaded bracelet</div><div style="font-size:12.5px;color:var(--dim);">Qty 1 · sold on its own</div></div></div>
+          <div class="ln"><span>Price</span><b>₪59.00</b></div>
+          <div class="ln"><span>Product cost + fee + packaging</span><b>− ₪33.00</b></div>
+          <div class="ln"><span>Shipping charged to customer</span><b style="color:var(--red)">₪0.00 (free)</b></div>
+          <div class="ln"><span>Real shipping cost</span><b>− ₪32.00</b></div>
+          <div class="net"><span>You keep</span><span class="bad">− ₪6.00</span></div>
+          <div style="margin-top:12px;font-size:13px;color:var(--red);background:var(--pred);border-radius:10px;padding:10px 13px;">This happens on 64% of this product's orders.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat rev reveal">
+      <div class="feat-text"><span class="tag sol">With Tachles</span><h2>It spots the pattern and fixes the price.</h2>
+        <p>Tachles sees the same product losing money again and again, and turns it into one decision. Pick a smart move, see the projected impact, approve it. From then on the product can't ship at a loss.</p></div>
+      <div class="mock-wrap">
+        <div class="browser">
+          <div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">app.tachles.io / pricing-insights</div></div>
+          <div class="bbody">
+            <div class="app-head"><span class="t">Pricing insights</span><span class="pill">3 to review</span></div>
+            <div style="display:flex;align-items:center;gap:13px;padding:4px 0 12px;"><div class="thumb th-amber">📿</div><div><div style="font-weight:700;color:var(--ink);font-size:15px;">Beaded bracelet · ₪59</div><div style="display:inline-block;margin-top:4px;font-size:12.5px;font-weight:700;color:var(--red);background:var(--pred);padding:2px 9px;border-radius:7px;">loses money when sold alone</div></div></div>
+            <div class="stat-g" style="grid-template-columns:1fr 1fr;"><div class="stt"><div class="k">Sold on its own</div><div class="v">64%</div><div class="delta" style="color:var(--dim)">of its orders</div></div><div class="stt"><div class="k">You keep, sold alone</div><div class="v" style="color:var(--red)">−₪6</div><div class="delta" style="color:var(--dim)">shipping eats it</div></div></div>
+            <div style="font-weight:700;color:var(--ink);font-size:13.5px;margin:16px 0 10px;">Smart moves Tachles found</div>
+            <div id="moves">
+              <div class="move on" data-imp="Projected: +₪1,240 a month, and 0 orders shipping at a loss."><div class="mi">🚚</div><div style="flex:1;"><div class="tt">Build ₪19 shipping into its price</div><div class="mt">price becomes ₪78, stays clean to the buyer</div></div><div class="am">+₪1,240</div><div class="sw on"></div></div>
+              <div class="move" data-imp="Projected: +₪1,600 a month. Average basket rises from ₪59 to ₪110."><div class="mi">💎</div><div style="flex:1;"><div class="tt">Bundle with matching earrings</div><div class="mt">raises the basket instead of the price</div></div><div class="am">+₪1,600</div><div class="sw"></div></div>
+              <div class="move" data-imp="Projected: +₪900 a month. Free shipping only over ₪129 nudges a second item."><div class="mi">🛒</div><div style="flex:1;"><div class="tt">Require ₪129 for free shipping</div><div class="mt">ends the lonely, loss-making order</div></div><div class="am">+₪900</div><div class="sw"></div></div>
+            </div>
+            <button class="btn btn-grad" style="margin-top:8px;font-size:14.5px;">Apply this rule</button>
+          </div>
+        </div>
+        <div class="float-tip" id="impTip">Projected: +₪1,240 a month, and 0 orders shipping at a loss.</div>
+      </div>
+    </div>
+
+    <div class="breakdown reveal">
+      <div class="bd what"><div class="k">What it does</div><ul>
+        <li><i>›</i> Watches your orders and finds the patterns: which products sell alone, which baskets lose money, where shipping eats the margin.</li>
+        <li><i>›</i> Recommends a smart fix and manages it: build shipping into a price, set a minimum, bundle items, or stop selling something on its own.</li>
+        <li><i>›</i> Keeps a baseline guard at checkout so no single order slips through at a loss.</li></ul></div>
+      <div class="bd why"><div class="k">Why it's powerful</div><ul>
+        <li><i>›</i> It's proactive. It fixes the root cause by managing your prices and offers, not just flagging one order.</li>
+        <li><i>›</i> Scattered, invisible losses turn into a few clear decisions you approve once.</li>
+        <li><i>›</i> The rules compound across thousands of orders and scale as you grow.</li></ul></div>
+    </div>
+    <div style="text-align:center;padding:50px 0 10px;"><button class="btn btn-ghost" data-view="returns">Next: Returns Engine ›</button></div>
+  </div>
+</div>
+
+<!-- ========== RETURNS ENGINE ========== -->
+<div class="view" id="view-returns">
+  <section class="hero sm"><div class="glow g2" style="width:420px;height:420px;background:rgba(59,123,246,.16);top:-140px;right:6%;"></div>
+    <div class="wrap hero-in" style="position:relative;z-index:2;">
+      <span class="eyebrow" style="background:var(--pblue);color:var(--blue);">Returns Engine</span>
+      <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">Handle a return <span class="grad">the right way.</span></h1>
+      <p class="lead">When a customer cancels, Tachles tells you exactly what you owe by law, picks the cheapest way to handle it, and writes the reply for you.</p>
+    </div></section>
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:10px;"><span class="eyebrow" style="background:var(--pred);color:var(--red);">The problem</span><h2 style="margin-top:14px;">Nobody knows what they actually owe.</h2></div>
+    <div class="feat reveal">
+      <div class="feat-text"><span class="tag prob">Before Tachles</span><h2>You guess, and usually over-pay.</h2>
+        <p>A cancellation comes in. Do you refund the shipping? Can you keep a fee? Even other owners give different answers. So most just refund everything to avoid a fight, and eat the cost.</p></div>
+      <div class="phone"><div class="pbar">customer chat</div><div class="pbody"><div class="chat">
+        <div class="bub inb">היי, אני רוצה לבטל את ההזמנה ולקבל החזר מלא 🙏</div>
+        <div class="bub q">כמה מגיע לי להחזיר לה? את המשלוח? יש דמי ביטול?</div>
+        <div class="bub inb">חברים, מישהו יודע מה החוק פה?</div>
+        <div class="bub me">"תחזיר הכל, פחות כאב ראש..."</div>
+      </div></div></div>
+    </div>
+
+    <div class="feat rev reveal">
+      <div class="feat-text"><span class="tag sol">With Tachles</span><h2>One screen. One click. Done.</h2>
+        <p>Tachles reads the order, the reason and where the parcel is, then shows what you legally owe, the cheapest action, and a ready reply in Hebrew.</p></div>
+      <div class="browser">
+        <div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">app.tachles.io / returns / #1043</div></div>
+        <div class="bbody">
+          <div class="app-head"><span class="t">Return · ₪600 dress · "wrong color"</span><span class="pill">delivered yesterday</span></div>
+          <div style="font-weight:700;color:var(--ink);font-size:13.5px;margin:6px 0;">What you legally owe</div>
+          <div class="owe"><i>✓</i> Refund the product price</div><div class="owe"><i>✓</i> You may deduct return shipping</div><div class="owe"><i>✓</i> You may keep up to 5% / ₪100 fee</div>
+          <div style="font-weight:700;color:var(--ink);font-size:13.5px;margin:14px 0 8px;">Cheapest way to handle it</div>
+          <div class="opt sel"><div><div class="tt">Customer drops at pickup point</div><div class="mt">recommended · avoids a courier leg</div></div><div class="am">₪0</div></div>
+          <div class="opt"><div><div class="tt">Send a courier to collect</div></div><div class="am">₪25</div></div>
+          <button class="btn btn-grad" id="apprB" style="margin-top:6px;font-size:14.5px;">Approve and send reply</button>
+          <div class="reply" id="replyB"><div class="l">Drafted reply</div><p>היי, תודה על הפנייה 🙏 בהתאם למדיניות החנות נזכה אותך על מחיר המוצר בניכוי דמי משלוח ההחזרה. ניתן להחזיר ללא עלות בנקודת איסוף קרובה, שולחים קישור?</p></div>
+          <div class="res" id="retRes"><span class="chip">Avoided a double shipping charge. ₪35 saved.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="breakdown reveal">
+      <div class="bd what"><div class="k">What it does</div><ul>
+        <li><i>›</i> Reads the order, the reason and where the parcel is right now.</li>
+        <li><i>›</i> Calculates what you legally owe under Israeli consumer law (14 days, 5% / ₪100, shipping rules).</li>
+        <li><i>›</i> Picks the cheapest compliant action and drafts the customer message in Hebrew.</li></ul></div>
+      <div class="bd why"><div class="k">Why it's powerful</div><ul>
+        <li><i>›</i> A confusing, semi-legal decision becomes one click.</li>
+        <li><i>›</i> You stop over-refunding and stop paying for two shipping legs.</li>
+        <li><i>›</i> You never have to guess the law, or argue it, again.</li></ul></div>
+    </div>
+    <div style="text-align:center;padding:50px 0 10px;"><button class="btn btn-ghost" data-view="refund">Next: Smart Refund ›</button></div>
+  </div>
+</div>
+
+<!-- ========== SMART REFUND ========== -->
+<div class="view" id="view-refund">
+  <section class="hero sm"><div class="glow g1" style="width:420px;height:420px;background:rgba(139,92,246,.16);top:-140px;left:8%;"></div>
+    <div class="wrap hero-in" style="position:relative;z-index:2;">
+      <span class="eyebrow" style="background:var(--ppurple);color:var(--purple);">Smart Refund</span>
+      <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">Keep the revenue, <span class="grad">don't just refund it.</span></h1>
+      <p class="lead">When the choice is the customer's, Tachles offers store credit with a small bonus next to the cash option. Most customers take it, and the money stays in your store.</p>
+    </div></section>
+  <div class="wrap">
+    <div class="feat reveal">
+      <div class="feat-text"><span class="tag prob">Before Tachles</span><h2>The money just leaves.</h2>
+        <p>Every return becomes a cash refund straight back to the card. The sale is gone, the customer is gone, and the cash is out of your business, even when they would have happily taken store credit.</p></div>
+      <div class="phone"><div class="pbar"><span class="d" style="width:8px;height:8px;border-radius:50%;background:#c2ccdd;display:inline-block;"></span> Maya's Jewelry</div><div class="pbody pscreen">
+        <div class="ttl">Refund</div><div class="sub">Order #1043</div>
+        <div style="text-align:center;padding:18px 0;"><div style="font-size:34px;font-weight:800;color:var(--red);">− ₪94.90</div><div style="font-size:13px;color:var(--dim);margin-top:6px;">refunded to card · ₪5 fee</div></div>
+        <div style="background:var(--pred);color:var(--red);border-radius:12px;padding:12px;text-align:center;font-size:13px;font-weight:600;">Sale lost. Cash left the store.</div>
+      </div></div>
+    </div>
+
+    <div class="feat rev reveal">
+      <div class="feat-text"><span class="tag sol">With Tachles</span><h2>A better option, right at the refund.</h2>
+        <p>Tachles puts store credit with a small bonus next to the cash option. The cash refund stays available whenever it's legally owed, so you keep more without breaking any rule.</p></div>
+      <div class="phone"><div class="pbar"><span class="d" style="width:8px;height:8px;border-radius:50%;background:var(--navy);display:inline-block;"></span> Maya's Jewelry</div><div class="pbody pscreen">
+        <div class="ttl">How would you like your refund?</div><div class="sub">Order #1043 · ₪94.90</div>
+        <div class="opt sel" id="oCredit" data-r="credit"><div><div class="tt">🎁 Store credit<span class="bonus">+₪10</span></div><div class="mt">No fees · use on your next order</div></div><div class="am">₪109.90</div></div>
+        <div class="opt" id="oCard" data-r="card"><div><div class="tt">💳 Back to my card</div><div class="mt">₪5 processing fee</div></div><div class="am">₪94.90</div></div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;font-size:14.5px;">Continue</button>
+        <div class="res" id="refRes" style="justify-content:center;"><span class="chip" style="margin-top:14px;">Customer chose credit · +39% retained</span></div>
+      </div></div>
+    </div>
+
+    <div class="breakdown reveal">
+      <div class="bd what"><div class="k">What it does</div><ul>
+        <li><i>›</i> At the refund step, shows store credit with a small bonus beside the cash option.</li>
+        <li><i>›</i> Keeps the cash refund available whenever the customer is legally owed it.</li></ul></div>
+      <div class="bd why"><div class="k">Why it's powerful</div><ul>
+        <li><i>›</i> Most customers pick credit, so the money stays in your store instead of leaving it.</li>
+        <li><i>›</i> Lifts retained revenue without breaking any consumer-protection rule.</li></ul></div>
+    </div>
+    <div style="text-align:center;padding:50px 0 10px;"><button class="btn btn-ghost" data-view="dashboard">Next: Margin Dashboard ›</button></div>
+  </div>
+</div>
+
+<!-- ========== DASHBOARD ========== -->
+<div class="view" id="view-dashboard">
+  <section class="hero sm"><div class="glow g2" style="width:420px;height:420px;background:rgba(224,150,43,.14);top:-140px;right:8%;"></div>
+    <div class="wrap hero-in" style="position:relative;z-index:2;">
+      <span class="eyebrow" style="background:var(--pamber);color:var(--amber);">Margin Dashboard</span>
+      <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">See what you kept, <span class="grad">every month.</span></h1>
+      <p class="lead">One screen that shows your true profit, the money Tachles saved, and whether it's growing. Personalized to your store, so the value is obvious.</p>
+    </div></section>
+  <div class="wrap">
+    <div class="feat reveal">
+      <div class="feat-text"><span class="tag prob">Before Tachles</span><h2>You don't really know your profit.</h2>
+        <p>Your store shows revenue, not profit. The real costs are scattered across courier invoices, payment statements and refunds, so the true number lives in a messy spreadsheet, or nowhere at all.</p></div>
+      <div class="browser"><div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">profit_tracking_final_v3.xlsx</div></div>
+        <div class="bbody"><div class="ssheet">
+          <div class="hr head"><span>Order</span><span>Revenue</span><span>Profit?</span></div>
+          <div class="hr"><span>#1041</span><span>₪150</span><span class="qq">?</span></div>
+          <div class="hr"><span>#1042</span><span>₪59</span><span class="qq">?</span></div>
+          <div class="hr"><span>#1043</span><span>₪600</span><span class="qq">?</span></div>
+          <div class="hr"><span>#1044</span><span>₪89</span><span class="qq">?</span></div>
+        </div><div style="margin-top:14px;font-size:13px;color:var(--red);background:var(--pred);border-radius:10px;padding:11px 13px;">Real shipping and fees aren't in here, so the profit column is a guess.</div></div>
+      </div>
+    </div>
+
+    <div class="feat rev reveal" id="dashFeat">
+      <div class="feat-text"><span class="tag sol">With Tachles</span><h2>Your real profit, and what was saved.</h2>
+        <p>Tachles pulls the real costs together and shows true net profit, the trend over time, and exactly where the saved money came from.</p></div>
+      <div class="browser"><div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">app.tachles.io / dashboard</div></div>
+        <div class="bbody">
+          <div class="greet">Good morning, <b>Maya</b> 👋 here's your June so far</div>
+          <div class="stat-g"><div class="stt"><div class="k">True net profit</div><div class="v tl">₪9,640</div><div class="delta up">↑ 18% vs May</div></div><div class="stt"><div class="k">Margin</div><div class="v">20%</div><div class="delta up">↑ 3 pts</div></div><div class="stt"><div class="k">Kept by Tachles</div><div class="v">₪5,190</div><div class="delta up">↑ 12% vs May</div></div></div>
+          <div class="chart-card"><div class="ch"><span class="t">Money kept per month</span><span class="v">₪5,190</span></div>
+            <svg viewBox="0 0 600 170" width="100%" height="130" preserveAspectRatio="none" aria-label="trend">
+              <defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#13C7A8" stop-opacity="0.3"/><stop offset="100%" stop-color="#13C7A8" stop-opacity="0"/></linearGradient></defs>
+              <path id="area" d="M20,140 L132,116 L244,96 L356,80 L468,57 L580,37 L580,150 L20,150 Z" fill="url(#ar)" opacity="0"/>
+              <path id="line" d="M20,140 L132,116 L244,96 L356,80 L468,57 L580,37" fill="none" stroke="#13C7A8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="20" cy="140" r="3.5" fill="#13C7A8"/><circle cx="132" cy="116" r="3.5" fill="#13C7A8"/><circle cx="244" cy="96" r="3.5" fill="#13C7A8"/><circle cx="356" cy="80" r="3.5" fill="#13C7A8"/><circle cx="468" cy="57" r="3.5" fill="#13C7A8"/><circle cx="580" cy="37" r="5.5" fill="#13C7A8"/><circle cx="580" cy="37" r="11" fill="#13C7A8" opacity="0.18"/>
+            </svg>
+            <div class="months"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div></div>
+          <div class="leak"><div class="lt">Where the money came from</div>
+            <div class="bar-row"><span class="lbl">Shipping priced right</span><div class="bar-track"><div class="bar-fill" data-w="58%"></div></div><span class="amt">₪1,900</span></div>
+            <div class="bar-row"><span class="lbl">Returns handled right</span><div class="bar-track"><div class="bar-fill" data-w="38%"></div></div><span class="amt">₪1,240</span></div>
+            <div class="bar-row"><span class="lbl">Refunds kept as credit</span><div class="bar-track"><div class="bar-fill" data-w="64%"></div></div><span class="amt">₪2,050</span></div></div>
+          <div class="kept"><span class="k">Total kept in June</span><span class="v" id="keptV">₪5,190</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="breakdown reveal">
+      <div class="bd what"><div class="k">What it does</div><ul>
+        <li><i>›</i> Rolls up true net profit per order and totals what Tachles saved across shipping, returns and refunds.</li>
+        <li><i>›</i> Shows the monthly trend and how this month compares to the last.</li></ul></div>
+      <div class="bd why"><div class="k">Why it's powerful</div><ul>
+        <li><i>›</i> You finally see where money leaks, and proof of what you kept.</li>
+        <li><i>›</i> The value is visible every month, so it earns its place.</li></ul></div>
+    </div>
+    <div style="text-align:center;padding:50px 0 10px;"><button class="btn btn-ghost" data-view="integrations">Next: Integrations ›</button></div>
+  </div>
+</div>
+
+<!-- ========== INTEGRATIONS ========== -->
+<div class="view" id="view-integrations">
+  <section class="hero sm"><div class="glow g1"></div><div class="glow g2"></div>
+    <div class="wrap hero-in" style="position:relative;z-index:2;">
+      <span class="eyebrow">Integrations</span>
+      <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">You don't build it. <span class="grad">It just plugs in.</span></h1>
+      <p class="lead">Tachles connects to the store, couriers and payment provider you already use. Connect once, and it reads your orders, real shipping costs and refunds, all in one place.</p>
+    </div></section>
+  <div class="wrap">
+    <section style="padding-top:30px;">
+      <div class="logo-grid reveal">
+        <div class="lcard"><div class="e">🛍️</div><div class="nm">Shopify</div><div class="cat">store</div></div>
+        <div class="lcard"><div class="e">🧩</div><div class="nm">WooCommerce</div><div class="cat">store</div></div>
+        <div class="lcard"><div class="e">🟦</div><div class="nm">Wix</div><div class="cat">store</div></div>
+        <div class="lcard"><div class="e">🚚</div><div class="nm">HFD</div><div class="cat">courier</div></div>
+        <div class="lcard"><div class="e">📦</div><div class="nm">UPS · Cargo</div><div class="cat">couriers</div></div>
+        <div class="lcard"><div class="e">📮</div><div class="nm">Israel Post</div><div class="cat">courier</div></div>
+        <div class="lcard"><div class="e">💸</div><div class="nm">Bit · cards</div><div class="cat">payments</div></div>
+        <div class="lcard"><div class="e">🧾</div><div class="nm">Green Invoice</div><div class="cat">accounting</div></div>
+      </div>
+    </section>
+
+    <section style="padding-top:10px;"><div class="payme-card reveal">
+      <span class="tagp">Built in with PayMe</span>
+      <h3 style="margin-top:16px;">Already on PayMe? Tachles is already there.</h3>
+      <p>If you clear payments with PayMe, Tachles turns on inside the dashboard you already use. Nothing to install, no new login. PayMe already sees your orders and fees, so Tachles can protect your margin from day one, and PayMe gets a stickier product and a new reason for merchants to stay.</p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;">
+        <div><div style="font-size:22px;font-weight:800;color:#fff;">0 setup</div><div style="font-size:13px;color:#9fb0cc;">it's in the menu</div></div>
+        <div><div style="font-size:22px;font-weight:800;color:#7fe7d4;">1 click</div><div style="font-size:13px;color:#9fb0cc;">to switch on</div></div>
+        <div><div style="font-size:22px;font-weight:800;color:#fff;">day 1</div><div style="font-size:13px;color:#9fb0cc;">protecting margin</div></div>
+      </div>
+    </div></section>
+
+    <section><div class="grid2" style="gap:20px;">
+      <div class="bd what reveal"><div class="k">What it reads</div><ul>
+        <li><i>›</i> Your orders and products from the store.</li>
+        <li><i>›</i> The real shipping cost from your couriers.</li>
+        <li><i>›</i> Payment fees and refunds from your payment provider.</li></ul></div>
+      <div class="bd why reveal d1"><div class="k">What stays yours</div><ul>
+        <li><i>›</i> You approve every pricing rule and every refund decision.</li>
+        <li><i>›</i> Tachles never changes a price or refunds a customer on its own.</li>
+        <li><i>›</i> Turn any part off whenever you want.</li></ul></div>
+    </div></section>
+
+    <section><div class="cta-box reveal"><h2>Connect once. Keep more from day one.</h2><p>See the product in action across all four tools.</p><button class="btn btn-grad" data-go="profit">See how it works</button></div></section>
+  </div>
+</div>
+
+<footer><div class="wrap foot"><div class="logo" style="font-size:18px;"><span class="d"></span>Tachles</div><div>Keep more of what every order earns · proof-of-concept</div></div></footer>
+
+<script>
+  const ids=['home','profit','returns','refund','dashboard','integrations'];
+  const views={}; ids.forEach(i=>views[i]=document.getElementById('view-'+i));
+  function setNav(v){document.querySelectorAll('.nlink').forEach(b=>b.classList.toggle('on',b.dataset.view===v));}
+  function go(v){if(!views[v])v='home';ids.forEach(i=>views[i].classList.toggle('on',i===v));setNav(v);document.getElementById('dropMenu').classList.remove('open');window.scrollTo({top:0,behavior:'instant'});revealAll(views[v]);}
+  document.querySelectorAll('[data-view]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();go(el.dataset.view);}));
+  document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();go(el.dataset.go);}));
+  const dropBtn=document.getElementById('dropBtn'),dropMenu=document.getElementById('dropMenu');
+  dropBtn.addEventListener('click',e=>{e.stopPropagation();dropMenu.classList.toggle('open');});
+  document.addEventListener('click',e=>{if(!e.target.closest('.dropdown'))dropMenu.classList.remove('open');});
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.id==='dashFeat')runDash();}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  function revealAll(scope){scope.querySelectorAll('.reveal').forEach(el=>{el.classList.add('in');if(el.id==='dashFeat')runDash();});}
+  setTimeout(()=>revealAll(views.home),200);
+
+  document.querySelectorAll('#moves .move').forEach(m=>m.addEventListener('click',()=>{document.querySelectorAll('#moves .move').forEach(x=>{x.classList.remove('on');x.querySelector('.sw').classList.remove('on');});m.classList.add('on');m.querySelector('.sw').classList.add('on');document.getElementById('impTip').textContent=m.dataset.imp;}));
+  document.getElementById('apprB').addEventListener('click',()=>{document.getElementById('replyB').classList.add('show');document.getElementById('retRes').classList.add('show');});
+  document.querySelectorAll('#oCredit,#oCard').forEach(o=>o.addEventListener('click',()=>{const c=o.dataset.r==='credit';document.getElementById('oCredit').classList.toggle('sel',c);document.getElementById('oCard').classList.toggle('sel',!c);document.getElementById('refRes').classList.toggle('show',c);}));
+
+  let dashRun=false;
+  function runDash(){if(dashRun)return;dashRun=true;const line=document.getElementById('line');const len=line.getTotalLength();line.style.strokeDasharray=len;line.style.strokeDashoffset=len;line.getBoundingClientRect();line.style.transition='stroke-dashoffset 1.4s ease';line.style.strokeDashoffset=0;setTimeout(()=>{document.getElementById('area').style.transition='opacity .8s ease';document.getElementById('area').style.opacity=1;},600);document.querySelectorAll('.bar-fill').forEach((b,i)=>setTimeout(()=>b.style.width=b.dataset.w,300+i*150));const el=document.getElementById('keptV');let n=0;const step=()=>{n+=170;if(n>=5190){el.textContent='₪5,190';}else{el.textContent='₪'+n.toLocaleString();requestAnimationFrame(step);}};el.textContent='₪0';requestAnimationFrame(step);}
+</script>
+</body>
+</html>
