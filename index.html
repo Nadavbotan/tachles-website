@@ -153,6 +153,15 @@
   .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;}
   .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);} .reveal.in{opacity:1;transform:none;}
   .d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}
+
+  .rule-modal{display:none;position:absolute;inset:0;background:rgba(19,35,74,.45);border-radius:16px;z-index:20;align-items:center;justify-content:center;}
+  .rule-modal.open{display:flex;}
+  .rule-modal-card{background:#fff;border-radius:18px;padding:32px 28px;text-align:center;max-width:300px;box-shadow:var(--sh);animation:vfade .3s ease;}
+  .rule-modal-check{width:52px;height:52px;border-radius:50%;background:var(--pteal);color:var(--teal);font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+  .rule-modal-title{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .rule-modal-desc{font-size:15px;font-weight:700;color:var(--teal);margin-bottom:6px;}
+  .rule-modal-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+  .rule-modal-btn{width:100%;justify-content:center;font-size:13.5px;padding:10px 16px;cursor:default;opacity:.85;}
 </style>
 </head>
 <body>
@@ -283,7 +292,16 @@
               <div class="move" data-imp="Projected: +₪1,600 a month. Average basket rises from ₪59 to ₪110."><div class="mi">💎</div><div style="flex:1;"><div class="tt">Bundle with matching earrings</div><div class="mt">raises the basket instead of the price</div></div><div class="am">+₪1,600</div><div class="sw"></div></div>
               <div class="move" data-imp="Projected: +₪900 a month. Free shipping only over ₪129 nudges a second item."><div class="mi">🛒</div><div style="flex:1;"><div class="tt">Require ₪129 for free shipping</div><div class="mt">ends the lonely, loss-making order</div></div><div class="am">+₪900</div><div class="sw"></div></div>
             </div>
-            <button class="btn btn-grad" style="margin-top:8px;font-size:14.5px;">Apply this rule</button>
+            <button class="btn btn-grad" id="applyRule" style="margin-top:8px;font-size:14.5px;">Apply this rule</button>
+            <div class="rule-modal" id="ruleModal">
+              <div class="rule-modal-card">
+                <div class="rule-modal-check">✓</div>
+                <div class="rule-modal-title">Rule applied</div>
+                <div class="rule-modal-desc" id="ruleModalDesc">Build ₪19 shipping into its price</div>
+                <div class="rule-modal-sub">This rule is now active on all future orders for this product.</div>
+                <button class="btn btn-ghost rule-modal-btn">View all active rules</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="float-tip" id="impTip">Projected: +₪1,240 a month, and 0 orders shipping at a loss.</div>
@@ -294,7 +312,7 @@
       <div class="bd what"><div class="k">What it does</div><ul>
         <li><i>›</i> Watches your orders and finds the patterns: which products sell alone, which baskets lose money, where shipping eats the margin.</li>
         <li><i>›</i> Recommends a smart fix and manages it: build shipping into a price, set a minimum, bundle items, or stop selling something on its own.</li>
-        <li><i>›</i> Keeps a baseline guard at checkout so no single order slips through at a loss.</li></ul></div>
+        <li><i>›</i> Tracks every checkout and flags orders that would ship at a loss, so you see the leak and fix it before it repeats.</li></ul></div>
       <div class="bd why"><div class="k">Why it's powerful</div><ul>
         <li><i>›</i> It's proactive. It fixes the root cause by managing your prices and offers, not just flagging one order.</li>
         <li><i>›</i> Scattered, invisible losses turn into a few clear decisions you approve once.</li>
@@ -527,6 +545,8 @@
   setTimeout(()=>revealAll(views.home),200);
 
   document.querySelectorAll('#moves .move').forEach(m=>m.addEventListener('click',()=>{document.querySelectorAll('#moves .move').forEach(x=>{x.classList.remove('on');x.querySelector('.sw').classList.remove('on');});m.classList.add('on');m.querySelector('.sw').classList.add('on');document.getElementById('impTip').textContent=m.dataset.imp;}));
+  document.getElementById('applyRule').addEventListener('click',()=>{const active=document.querySelector('#moves .move.on');if(active){document.getElementById('ruleModalDesc').textContent=active.querySelector('.tt').textContent;}document.getElementById('ruleModal').classList.add('open');});
+  document.getElementById('ruleModal').addEventListener('click',e=>{if(e.target===document.getElementById('ruleModal'))document.getElementById('ruleModal').classList.remove('open');});
   document.getElementById('apprB').addEventListener('click',()=>{document.getElementById('replyB').classList.add('show');document.getElementById('retRes').classList.add('show');});
   document.querySelectorAll('#oCredit,#oCard').forEach(o=>o.addEventListener('click',()=>{const c=o.dataset.r==='credit';document.getElementById('oCredit').classList.toggle('sel',c);document.getElementById('oCard').classList.toggle('sel',!c);document.getElementById('refRes').classList.toggle('show',c);}));
 
