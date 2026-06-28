@@ -145,7 +145,7 @@
   /* integrations */
   .logo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;} @media(max-width:760px){.logo-grid{grid-template-columns:1fr 1fr;}}
   .lcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;box-shadow:var(--sh-sm);transition:.3s;} .lcard:hover{transform:translateY(-4px);box-shadow:var(--sh);}
-  .lcard .e{font-size:30px;} .lcard .nm{font-weight:700;color:var(--ink);margin-top:8px;font-size:15px;} .lcard .cat{font-size:12px;color:var(--dim);margin-top:2px;}
+  .lcard .e{font-size:30px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;margin:0 auto;} .lcard .e img{width:100%;height:100%;object-fit:contain;} .lcard .nm{font-weight:700;color:var(--ink);margin-top:8px;font-size:15px;} .lcard .cat{font-size:12px;color:var(--dim);margin-top:2px;}
   .payme-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);background:linear-gradient(135deg,#0E1B33,#1d2b4d);color:#fff;padding:38px;}
   .payme-card h3{color:#fff;font-size:24px;} .payme-card p{color:#b9c4dc;margin-top:12px;} .payme-card .tagp{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7fe7d4;background:rgba(127,231,212,.12);padding:5px 13px;border-radius:100px;}
 
@@ -238,10 +238,10 @@
       <p>Tachles is not a system you build. It connects to your store, couriers and payments in a few clicks, and if you use PayMe it is already built in. Start solo, and keep it as you grow.</p>
       <button class="btn btn-grad" style="margin-top:22px;" data-view="integrations">See integrations</button></div>
     <div class="reveal d1"><div class="logo-grid" style="grid-template-columns:1fr 1fr;">
-      <div class="lcard"><div class="e">🛍️</div><div class="nm">Shopify</div><div class="cat">store</div></div>
-      <div class="lcard"><div class="e">🚚</div><div class="nm">HFD · UPS</div><div class="cat">couriers</div></div>
-      <div class="lcard"><div class="e">💳</div><div class="nm">PayMe</div><div class="cat">payments · built in</div></div>
-      <div class="lcard"><div class="e">🧾</div><div class="nm">Green Invoice</div><div class="cat">accounting</div></div>
+      <div class="lcard"><div class="e"><img src="https://cdn.simpleicons.org/shopify" alt="Shopify" loading="lazy"></div><div class="nm">Shopify</div><div class="cat">store</div></div>
+      <div class="lcard"><div class="e"><img src="https://www.hfd.co.il/wp-content/uploads/2020/06/LOGO.png" alt="HFD" loading="lazy"></div><div class="nm">HFD · UPS</div><div class="cat">couriers</div></div>
+      <div class="lcard"><div class="e"><img src="https://www.google.com/s2/favicons?domain=payme.io&sz=128" alt="PayMe" loading="lazy"></div><div class="nm">PayMe</div><div class="cat">payments · built in</div></div>
+      <div class="lcard"><div class="e"><img src="https://wp-static.greeninvoice.co.il/public-website/2025/09/Logo-Forest-Green.svg" alt="Green Invoice" loading="lazy"></div><div class="nm">Green Invoice</div><div class="cat">accounting</div></div>
     </div></div>
   </div></section>
 
@@ -328,7 +328,7 @@
     <div class="wrap hero-in" style="position:relative;z-index:2;">
       <span class="eyebrow" style="background:var(--pblue);color:var(--blue);">Returns Engine</span>
       <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">Handle a return <span class="grad">the right way.</span></h1>
-      <p class="lead">When a customer cancels, Tachles tells you exactly what you owe by law, picks the cheapest way to handle it, and writes the reply for you.</p>
+      <p class="lead">When a customer cancels, Tachles tells you exactly what you owe by law, picks the cheapest way to handle it, and manages it for you.</p>
     </div></section>
   <div class="wrap">
     <div class="sec-head reveal" style="margin-bottom:10px;"><span class="eyebrow" style="background:var(--pred);color:var(--red);">The problem</span><h2 style="margin-top:14px;">Nobody knows what they actually owe.</h2></div>
@@ -345,7 +345,7 @@
 
     <div class="feat rev reveal">
       <div class="feat-text"><span class="tag sol">With Tachles</span><h2>One screen. One click. Done.</h2>
-        <p>Tachles reads the order, the reason and where the parcel is, then shows what you legally owe, the cheapest action, and a ready reply in Hebrew.</p></div>
+        <p>Tachles reads the order, the reason and where the parcel is, then shows what you legally owe, the cheapest action, and a ready reply.</p></div>
       <div class="browser">
         <div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">app.tachles.io / returns / #1043</div></div>
         <div class="bbody">
@@ -353,11 +353,11 @@
           <div style="font-weight:700;color:var(--ink);font-size:13.5px;margin:6px 0;">What you legally owe</div>
           <div class="owe"><i>✓</i> Refund the product price</div><div class="owe"><i>✓</i> You may deduct return shipping</div><div class="owe"><i>✓</i> You may keep up to 5% / ₪100 fee</div>
           <div style="font-weight:700;color:var(--ink);font-size:13.5px;margin:14px 0 8px;">Cheapest way to handle it</div>
-          <div class="opt sel"><div><div class="tt">Customer drops at pickup point</div><div class="mt">recommended · avoids a courier leg</div></div><div class="am">₪0</div></div>
-          <div class="opt"><div><div class="tt">Send a courier to collect</div></div><div class="am">₪25</div></div>
+          <div class="opt sel" id="retPickup" data-reply="היי, תודה על הפנייה 🙏 בהתאם למדיניות החנות נזכה אותך על מחיר המוצר בניכוי דמי משלוח ההחזרה. ניתן להחזיר ללא עלות בנקודת איסוף קרובה, שולחים קישור?" data-res="Avoided a double shipping charge. ₪35 saved."><div><div class="tt">Customer drops at pickup point</div><div class="mt">recommended · avoids a courier leg</div></div><div class="am">₪0</div></div>
+          <div class="opt" id="retCourier" data-reply="היי, תודה על הפנייה 🙏 בהתאם למדיניות החנות נזכה אותך על מחיר המוצר בניכוי דמי משלוח ההחזרה (₪25). שליח HFD יגיע לאיסוף מחר בין 14:00–18:00. נשלח קישור למעקב?" data-res="Courier booked · return shipping deducted from refund"><div><div class="tt">Send a courier to collect</div><div class="mt">when pickup isn't practical</div></div><div class="am">₪25</div></div>
           <button class="btn btn-grad" id="apprB" style="margin-top:6px;font-size:14.5px;">Approve and send reply</button>
-          <div class="reply" id="replyB"><div class="l">Drafted reply</div><p>היי, תודה על הפנייה 🙏 בהתאם למדיניות החנות נזכה אותך על מחיר המוצר בניכוי דמי משלוח ההחזרה. ניתן להחזיר ללא עלות בנקודת איסוף קרובה, שולחים קישור?</p></div>
-          <div class="res" id="retRes"><span class="chip">Avoided a double shipping charge. ₪35 saved.</span></div>
+          <div class="reply" id="replyB"><div class="l">Drafted reply</div><p id="replyBText">היי, תודה על הפנייה 🙏 בהתאם למדיניות החנות נזכה אותך על מחיר המוצר בניכוי דמי משלוח ההחזרה. ניתן להחזיר ללא עלות בנקודת איסוף קרובה, שולחים קישור?</p></div>
+          <div class="res" id="retRes"><span class="chip" id="retResText">Avoided a double shipping charge. ₪35 saved.</span></div>
         </div>
       </div>
     </div>
@@ -365,8 +365,8 @@
     <div class="breakdown reveal">
       <div class="bd what"><div class="k">What it does</div><ul>
         <li><i>›</i> Reads the order, the reason and where the parcel is right now.</li>
-        <li><i>›</i> Calculates what you legally owe under Israeli consumer law (14 days, 5% / ₪100, shipping rules).</li>
-        <li><i>›</i> Picks the cheapest compliant action and drafts the customer message in Hebrew.</li></ul></div>
+        <li><i>›</i> Calculates what you legally owe: 14-day window, up to 5% / ₪100 fee, and shipping rules.</li>
+        <li><i>›</i> Picks the cheapest compliant action and drafts the customer reply.</li></ul></div>
       <div class="bd why"><div class="k">Why it's powerful</div><ul>
         <li><i>›</i> A confusing, semi-legal decision becomes one click.</li>
         <li><i>›</i> You stop over-refunding and stop paying for two shipping legs.</li>
@@ -397,10 +397,10 @@
 
     <div class="feat rev reveal">
       <div class="feat-text"><span class="tag sol">With Tachles</span><h2>A better option, right at the refund.</h2>
-        <p>Tachles puts store credit with a small bonus next to the cash option. The cash refund stays available whenever it's legally owed, so you keep more without breaking any rule.</p></div>
+        <p>Tachles puts store credit with a small bonus next to the cash option. Most customers take it because they get more value - and the money stays working in your store instead of walking out the door.</p></div>
       <div class="phone"><div class="pbar"><span class="d" style="width:8px;height:8px;border-radius:50%;background:var(--navy);display:inline-block;"></span> Maya's Jewelry</div><div class="pbody pscreen">
         <div class="ttl">How would you like your refund?</div><div class="sub">Order #1043 · ₪94.90</div>
-        <div class="opt sel" id="oCredit" data-r="credit"><div><div class="tt">🎁 Store credit<span class="bonus">+₪10</span></div><div class="mt">No fees · use on your next order</div></div><div class="am">₪109.90</div></div>
+        <div class="opt sel" id="oCredit" data-r="credit"><div><div class="tt">🎁 Store credit<span class="bonus">+₪10</span></div><div class="mt">No fees · use on your next order</div></div><div class="am">₪104.90</div></div>
         <div class="opt" id="oCard" data-r="card"><div><div class="tt">💳 Back to my card</div><div class="mt">₪5 processing fee</div></div><div class="am">₪94.90</div></div>
         <button class="btn btn-grad" style="width:100%;justify-content:center;font-size:14.5px;">Continue</button>
         <div class="res" id="refRes" style="justify-content:center;"><span class="chip" style="margin-top:14px;">Customer chose credit · +39% retained</span></div>
@@ -412,8 +412,8 @@
         <li><i>›</i> At the refund step, shows store credit with a small bonus beside the cash option.</li>
         <li><i>›</i> Keeps the cash refund available whenever the customer is legally owed it.</li></ul></div>
       <div class="bd why"><div class="k">Why it's powerful</div><ul>
-        <li><i>›</i> Most customers pick credit, so the money stays in your store instead of leaving it.</li>
-        <li><i>›</i> Lifts retained revenue without breaking any consumer-protection rule.</li></ul></div>
+        <li><i>›</i> Customers get more value with credit, so most choose it - a win for them and for you.</li>
+        <li><i>›</i> A refund that used to mean lost revenue now becomes the next sale.</li></ul></div>
     </div>
     <div style="text-align:center;padding:50px 0 10px;"><button class="btn btn-ghost" data-view="dashboard">Next: Margin Dashboard ›</button></div>
   </div>
@@ -425,7 +425,7 @@
     <div class="wrap hero-in" style="position:relative;z-index:2;">
       <span class="eyebrow" style="background:var(--pamber);color:var(--amber);">Margin Dashboard</span>
       <h1 style="font-size:clamp(30px,4.4vw,48px);margin:20px 0 16px;">See what you kept, <span class="grad">every month.</span></h1>
-      <p class="lead">One screen that shows your true profit, the money Tachles saved, and whether it's growing. Personalized to your store, so the value is obvious.</p>
+      <p class="lead">One screen that shows your true profit, how much you kept this month, and whether it's growing. Personalized to your store, so the value is obvious.</p>
     </div></section>
   <div class="wrap">
     <div class="feat reveal">
@@ -443,8 +443,8 @@
     </div>
 
     <div class="feat rev reveal" id="dashFeat">
-      <div class="feat-text"><span class="tag sol">With Tachles</span><h2>Your real profit, and what was saved.</h2>
-        <p>Tachles pulls the real costs together and shows true net profit, the trend over time, and exactly where the saved money came from.</p></div>
+      <div class="feat-text"><span class="tag sol">With Tachles</span><h2>Your real profit, and what you kept.</h2>
+        <p>Your true margin, month by month - how much you kept, where it came from, and whether it's growing.</p></div>
       <div class="browser"><div class="bbar"><div class="dots"><span></span><span></span><span></span></div><div class="burl">app.tachles.io / dashboard</div></div>
         <div class="bbody">
           <div class="greet">Good morning, <b>Maya</b> 👋 here's your June so far</div>
@@ -468,8 +468,8 @@
 
     <div class="breakdown reveal">
       <div class="bd what"><div class="k">What it does</div><ul>
-        <li><i>›</i> Rolls up true net profit per order and totals what Tachles saved across shipping, returns and refunds.</li>
-        <li><i>›</i> Shows the monthly trend and how this month compares to the last.</li></ul></div>
+        <li><i>›</i> Rolls up your true net profit per order and totals how much you kept across shipping, returns, and refunds.</li>
+        <li><i>›</i> Shows your monthly trend - how much you kept, where it came from, and how this month compares to the last.</li></ul></div>
       <div class="bd why"><div class="k">Why it's powerful</div><ul>
         <li><i>›</i> You finally see where money leaks, and proof of what you kept.</li>
         <li><i>›</i> The value is visible every month, so it earns its place.</li></ul></div>
@@ -489,21 +489,21 @@
   <div class="wrap">
     <section style="padding-top:30px;">
       <div class="logo-grid reveal">
-        <div class="lcard"><div class="e">🛍️</div><div class="nm">Shopify</div><div class="cat">store</div></div>
-        <div class="lcard"><div class="e">🧩</div><div class="nm">WooCommerce</div><div class="cat">store</div></div>
-        <div class="lcard"><div class="e">🟦</div><div class="nm">Wix</div><div class="cat">store</div></div>
-        <div class="lcard"><div class="e">🚚</div><div class="nm">HFD</div><div class="cat">courier</div></div>
-        <div class="lcard"><div class="e">📦</div><div class="nm">UPS · Cargo</div><div class="cat">couriers</div></div>
-        <div class="lcard"><div class="e">📮</div><div class="nm">Israel Post</div><div class="cat">courier</div></div>
-        <div class="lcard"><div class="e">💸</div><div class="nm">Bit · cards</div><div class="cat">payments</div></div>
-        <div class="lcard"><div class="e">🧾</div><div class="nm">Green Invoice</div><div class="cat">accounting</div></div>
+        <div class="lcard"><div class="e"><img src="https://cdn.simpleicons.org/shopify" alt="Shopify" loading="lazy"></div><div class="nm">Shopify</div><div class="cat">store</div></div>
+        <div class="lcard"><div class="e"><img src="https://cdn.simpleicons.org/woocommerce" alt="WooCommerce" loading="lazy"></div><div class="nm">WooCommerce</div><div class="cat">store</div></div>
+        <div class="lcard"><div class="e"><img src="https://cdn.simpleicons.org/wix" alt="Wix" loading="lazy"></div><div class="nm">Wix</div><div class="cat">store</div></div>
+        <div class="lcard"><div class="e"><img src="https://www.hfd.co.il/wp-content/uploads/2020/06/LOGO.png" alt="HFD" loading="lazy"></div><div class="nm">HFD</div><div class="cat">courier</div></div>
+        <div class="lcard"><div class="e"><img src="https://cdn.simpleicons.org/ups" alt="UPS" loading="lazy"></div><div class="nm">UPS · Cargo</div><div class="cat">couriers</div></div>
+        <div class="lcard"><div class="e"><img src="https://israelpost.co.il/media/1095/logo-login.png" alt="Israel Post" loading="lazy"></div><div class="nm">Israel Post</div><div class="cat">courier</div></div>
+        <div class="lcard"><div class="e"><img src="https://www.google.com/s2/favicons?domain=bitpay.co.il&sz=128" alt="Bit" loading="lazy"></div><div class="nm">Bit · cards</div><div class="cat">payments</div></div>
+        <div class="lcard"><div class="e"><img src="https://wp-static.greeninvoice.co.il/public-website/2025/09/Logo-Forest-Green.svg" alt="Green Invoice" loading="lazy"></div><div class="nm">Green Invoice</div><div class="cat">accounting</div></div>
       </div>
     </section>
 
     <section style="padding-top:10px;"><div class="payme-card reveal">
       <span class="tagp">Built in with PayMe</span>
-      <h3 style="margin-top:16px;">Already on PayMe? Tachles is already there.</h3>
-      <p>If you clear payments with PayMe, Tachles turns on inside the dashboard you already use. Nothing to install, no new login. PayMe already sees your orders and fees, so Tachles can protect your margin from day one, and PayMe gets a stickier product and a new reason for merchants to stay.</p>
+      <h3 style="margin-top:16px;">Already on PayMe? Tachles is built in.</h3>
+      <p>If you clear payments with PayMe, Tachles turns on inside the dashboard you already use. Nothing to install, no new login. PayMe already sees your orders and fees, so Tachles can start protecting your margin from day one using the order and fee data that's already there.</p>
       <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;">
         <div><div style="font-size:22px;font-weight:800;color:#fff;">0 setup</div><div style="font-size:13px;color:#9fb0cc;">it's in the menu</div></div>
         <div><div style="font-size:22px;font-weight:800;color:#7fe7d4;">1 click</div><div style="font-size:13px;color:#9fb0cc;">to switch on</div></div>
@@ -547,7 +547,10 @@
   document.querySelectorAll('#moves .move').forEach(m=>m.addEventListener('click',()=>{document.querySelectorAll('#moves .move').forEach(x=>{x.classList.remove('on');x.querySelector('.sw').classList.remove('on');});m.classList.add('on');m.querySelector('.sw').classList.add('on');document.getElementById('impTip').textContent=m.dataset.imp;}));
   document.getElementById('applyRule').addEventListener('click',()=>{const active=document.querySelector('#moves .move.on');if(active){document.getElementById('ruleModalDesc').textContent=active.querySelector('.tt').textContent;}document.getElementById('ruleModal').classList.add('open');});
   document.getElementById('ruleModal').addEventListener('click',e=>{if(e.target===document.getElementById('ruleModal'))document.getElementById('ruleModal').classList.remove('open');});
-  document.getElementById('apprB').addEventListener('click',()=>{document.getElementById('replyB').classList.add('show');document.getElementById('retRes').classList.add('show');});
+  function selectRetOpt(el){document.querySelectorAll('#retPickup,#retCourier').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');document.getElementById('replyB').classList.remove('show');document.getElementById('retRes').classList.remove('show');}
+  document.getElementById('retPickup').addEventListener('click',()=>selectRetOpt(document.getElementById('retPickup')));
+  document.getElementById('retCourier').addEventListener('click',()=>selectRetOpt(document.getElementById('retCourier')));
+  document.getElementById('apprB').addEventListener('click',()=>{const sel=document.querySelector('#retPickup.sel,#retCourier.sel');document.getElementById('replyBText').textContent=sel.dataset.reply;document.getElementById('retResText').textContent=sel.dataset.res;document.getElementById('replyB').classList.add('show');document.getElementById('retRes').classList.add('show');});
   document.querySelectorAll('#oCredit,#oCard').forEach(o=>o.addEventListener('click',()=>{const c=o.dataset.r==='credit';document.getElementById('oCredit').classList.toggle('sel',c);document.getElementById('oCard').classList.toggle('sel',!c);document.getElementById('refRes').classList.toggle('show',c);}));
 
   let dashRun=false;
